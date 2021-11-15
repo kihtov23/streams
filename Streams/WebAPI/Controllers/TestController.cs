@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.DataAccess;
+
 
 namespace WebAPI.Controllers
 {
@@ -14,28 +15,59 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        string connectionString =
-            "Data Source=(local);Initial Catalog=Test;Integrated Security=true";
+        private readonly ArticleDbContext _dbContext;
 
-        private string queryString = "SELECT BigString from dbo.BigStrings";
-
+        public TestController(ArticleDbContext context)
+        {
+            _dbContext = context;
+        }
 
         [HttpGet]
-        public IActionResult Get()
+        [Route("/helloWorld")]
+        public async Task<IActionResult> Get()
         {
             return Ok("Hello world!");
         }
 
-        private async Task GetBigStrings()
+        [HttpGet]
+        [Route("/GetBigArticle")]
+        public async Task<IActionResult> GetBigArticle()
         {
-            await using SqlConnection connection = new SqlConnection(connectionString);
-            SqlCommand command = new SqlCommand(queryString, connection);
+            var article = await GetArticle();
+            return Ok(article);
+        }
 
-            connection.Open();
-            await using SqlDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
-            while (await reader.ReadAsync())
+        private async Task<Article> GetArticle()
+        {
+            return await _dbContext.Articles.FirstAsync(a => a.Name == "89000 elements, 5 MB");
+        }
+
+        [HttpGet]
+        [Route("/GetPosts")]
+        public IAsyncEnumerable<Post> GetPostsFromDb()
+        {
+            var posts = GetPostsQueryable();
+            return posts;
+        }
+
+        private IAsyncEnumerable<Post> GetPostsQueryable()
+        {
+            return _dbContext.Posts.Where(a => a.Name == "8900 elements").AsAsyncEnumerable();
+        }
+
+        [HttpGet]
+        [Route("/GetPostsFromCode")]
+        public IAsyncEnumerable<int> GetPostsFromCode()
+        {
+            return GetPosts();
+        }
+
+        private async IAsyncEnumerable<int> GetPosts()
+        {
+            for (int i = 1; i <= 5; i++)
             {
-                using TextReader data = reader.GetTextReader("BigString");
+                await Task.Delay(500);
+                yield return i;
             }
         }
     }

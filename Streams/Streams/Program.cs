@@ -6,6 +6,8 @@ namespace Streams
     {
         static void Main(string[] args)
         {
+            DataSeed.Seed().GetAwaiter().GetResult();
+
             Console.WriteLine("Hello World!");
         }
     }
