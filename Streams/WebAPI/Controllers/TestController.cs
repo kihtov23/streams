@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,16 +21,11 @@ namespace WebAPI.Controllers
             _dbContext = context;
         }
 
-        [HttpGet]
-        [Route("/helloWorld")]
-        public async Task<IActionResult> Get()
-        {
-            return Ok("Hello world!");
-        }
+        #region UseCase - BigArticleAsSingleModel
 
         [HttpGet]
-        [Route("/GetBigArticle")]
-        public async Task<IActionResult> GetBigArticle()
+        [Route("/bigArticleAsSingleModel")]
+        public async Task<IActionResult> GetBigArticleAsSingleModel()
         {
             var article = await GetArticle();
             return Ok(article);
@@ -41,6 +35,30 @@ namespace WebAPI.Controllers
         {
             return await _dbContext.Articles.FirstAsync(a => a.Name == "89000 elements, 5 MB");
         }
+
+        #endregion
+
+        #region UseCase - Get numbers IAsyncEnumerable
+
+        [HttpGet]
+        [Route("/Numbers")]
+        public IAsyncEnumerable<int> GetNumbers()
+        {
+            return GetNumbersAsync();
+        }
+
+        private async IAsyncEnumerable<int> GetNumbersAsync()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                await Task.Delay(500);
+                yield return i;
+            }
+        }
+
+        #endregion
+
+        #region UseCase - GetPosts as IAsyncEnumerable 
 
         [HttpGet]
         [Route("/GetPosts")]
@@ -52,23 +70,33 @@ namespace WebAPI.Controllers
 
         private IAsyncEnumerable<Post> GetPostsQueryable()
         {
-            return _dbContext.Posts.Where(a => a.Name == "8900 elements").AsAsyncEnumerable();
+            return _dbContext.Posts.AsNoTracking().Where(a => a.Name == "8900 elements").AsAsyncEnumerable();
         }
+
+        #endregion
+
+        #region UseCase - Stream as a file
 
         [HttpGet]
-        [Route("/GetPostsFromCode")]
-        public IAsyncEnumerable<int> GetPostsFromCode()
+        [Route("/fileStream")]
+        public async Task<IActionResult> GetFileAsStream()
         {
-            return GetPosts();
+            StreamReader file = System.IO.File.OpenText("./89000elements.txt");
+            return File(file.BaseStream, "application/octet-stream");
         }
 
-        private async IAsyncEnumerable<int> GetPosts()
+        #endregion
+
+        #region UseCase - Stream string from DB (ADO.NET)
+
+        [HttpGet]
+        [Route("/streamStringFromDb")]
+        public async Task<IActionResult> GetFileAsStreamFromDb()
         {
-            for (int i = 1; i <= 5; i++)
-            {
-                await Task.Delay(500);
-                yield return i;
-            }
+            //TODO implement
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
