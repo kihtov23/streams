@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Streams
+namespace DataSeed
 {
     class Program
     {
@@ -8,7 +8,7 @@ namespace Streams
         {
             Console.WriteLine("Start Data Seed....");
 
-            DataSeed.Seed().GetAwaiter().GetResult();
+            DataSeedHelper.Seed().GetAwaiter().GetResult();
 
             Console.WriteLine("Finished.");
             Console.ReadLine();

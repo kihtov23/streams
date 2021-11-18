@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamsDataSeed", "Streams\StreamsDataSeed.csproj", "{99E32BBE-E738-4FE7-AD3F-B45893347DC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSeedNet3", "Streams\DataSeedNet3.csproj", "{99E32BBE-E738-4FE7-AD3F-B45893347DC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi3", "WebAPI\WebApi3.csproj", "{6F1CC95B-5415-4AA8-86C0-6A691E89426F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiNet3", "WebAPI\WebApiNet3.csproj", "{6F1CC95B-5415-4AA8-86C0-6A691E89426F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi6", "WebApi6\WebApi6.csproj", "{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiNet6", "WebApi6\WebApiNet6.csproj", "{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{74A39312-451A-4B8E-9C3E-E4F212833CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{C83573E5-1C14-4973-88E4-3BC8D1D9D323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74A39312-451A-4B8E-9C3E-E4F212833CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A39312-451A-4B8E-9C3E-E4F212833CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A39312-451A-4B8E-9C3E-E4F212833CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A39312-451A-4B8E-9C3E-E4F212833CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C83573E5-1C14-4973-88E4-3BC8D1D9D323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83573E5-1C14-4973-88E4-3BC8D1D9D323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83573E5-1C14-4973-88E4-3BC8D1D9D323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83573E5-1C14-4973-88E4-3BC8D1D9D323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

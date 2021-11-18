@@ -3,22 +3,22 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Streams
+namespace DataSeed
 {
     /// <summary>
     /// Insert json to DB from files.
     /// Important note: when file is inserted into DB it has 2 times bigger size in SQL server
     /// </summary>
-    public class DataSeed
+    public class DataSeedHelper
     {
         public static async Task Seed()
         {
-            await DataSeed.ClearDb();
+            await ClearDb();
 
-            await DataSeed.Stream50KBFileToServer();
-            await DataSeed.Stream5MBfileToServer();
+            await Stream50KBFileToServer();
+            await Stream5MBfileToServer();
 
-            await DataSeed.Stream8900PostsToDb();
+            await Stream8900PostsToDb();
         }
 
         public static async Task ClearDb()

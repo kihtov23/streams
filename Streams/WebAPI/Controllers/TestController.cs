@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.DataAccess;
+using WebAPI.Posts;
 
 
-namespace WebAPI.Controllers
+namespace WebApiNet3.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -80,39 +80,10 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("/fileStream")]
-        public async Task<IActionResult> GetFileAsStream()
+        public IActionResult GetFileAsStream()
         {
             StreamReader file = System.IO.File.OpenText("./89000elements.txt");
             return File(file.BaseStream, "application/octet-stream");
-        }
-
-        #endregion
-
-        #region UseCase - Stream string from DB as file (ADO.NET)
-
-        [HttpGet]
-        [Route("/streamStringFromDbAsFile")]
-        public async Task<IActionResult> GetFileAsStreamFromDb()
-        {
-            var bigString = await GetStreamFromDb();
-            return File(bigString, "application/octet-stream");
-
-        }
-
-        private async Task<Stream> GetStreamFromDb()
-        {
-            await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
-            await conn.OpenAsync();
-            await using SqlCommand cmd = new SqlCommand("SELECT BigString  FROM [Test].[dbo].[Articles] where Name = '89000 elements, 5 MB'", conn);
-            await using SqlDataReader reader = await cmd.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
-            await reader.ReadAsync();
-
-            using TextReader bigString = reader.GetTextReader("BigString");
-
-            bigString.ReadAsync()
-
-
-            return ((StreamReader)bigString).BaseStream;
         }
 
         #endregion

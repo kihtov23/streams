@@ -1,4 +1,4 @@
-﻿namespace Streams
+﻿namespace DataSeed
 {
     public class Constants
     {
