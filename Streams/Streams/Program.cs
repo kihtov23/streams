@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataSeed
+namespace DataSeedNet3
 {
     class Program
     {

@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiNet3", "WebAPI\WebApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiNet6", "WebApi6\WebApiNet6.csproj", "{4D94AC7B-4735-4653-9BEC-1DB82DC5756C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{74A39312-451A-4B8E-9C3E-E4F212833CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{74A39312-451A-4B8E-9C3E-E4F212833CC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{C83573E5-1C14-4973-88E4-3BC8D1D9D323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{C83573E5-1C14-4973-88E4-3BC8D1D9D323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

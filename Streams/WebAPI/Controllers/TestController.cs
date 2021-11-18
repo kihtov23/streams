@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Utils;
 using WebAPI.Posts;
 
 
@@ -22,27 +23,17 @@ namespace WebApiNet3.Controllers
             _dbContext = context;
         }
 
-        #region UseCase - BigArticleAsSingleModel
-
         [HttpGet]
-        [Route("/bigArticleAsSingleModel")]
-        public async Task<IActionResult> GetBigArticleAsSingleModel()
+        [Route("/")]
+        public IActionResult HelloWorld()
         {
-            var article = await GetArticle();
-            return Ok(article);
+            return Ok("Hello world!");
         }
-
-        private async Task<Article> GetArticle()
-        {
-            return await _dbContext.Articles.FirstAsync(a => a.Name == "89000 elements, 5 MB");
-        }
-
-        #endregion
 
         #region UseCase - Get numbers IAsyncEnumerable
 
         [HttpGet]
-        [Route("/Numbers")]
+        [Route("/numbers")]
         public IAsyncEnumerable<int> GetNumbers()
         {
             return GetNumbersAsync();
@@ -59,19 +50,38 @@ namespace WebApiNet3.Controllers
 
         #endregion
 
+        #region UseCase - BigArticleAsSingleModel
+
+        [HttpGet]
+        [Route("/bigArticleAsSingleModel")]
+        public async Task<IActionResult> GetBigArticleAsSingleModel()
+        {
+            var article = await GetArticle();
+            return Ok(article);
+        }
+
+        private async Task<Article> GetArticle()
+        {
+            return await _dbContext.Articles.AsNoTracking().FirstAsync(a => a.Name == Constants.FileNames.With_8900_Elements_5MB);
+        }
+
+        #endregion
+
         #region UseCase - GetPosts as IAsyncEnumerable 
 
         [HttpGet]
         [Route("/GetPosts")]
         public IAsyncEnumerable<Post> GetPostsFromDb()
         {
+            // Need to update MaxIAsyncEnumerableBufferLimit (Defaults to 8192) 
+
             var posts = GetPostsQueryable();
             return posts;
         }
 
         private IAsyncEnumerable<Post> GetPostsQueryable()
         {
-            return _dbContext.Posts.AsNoTracking().Where(a => a.Name == "8900 elements").AsAsyncEnumerable();
+            return _dbContext.Posts.AsNoTracking().Where(a => a.Name == Constants.FileNames.With_1_Element_1KB).AsAsyncEnumerable();
         }
 
         #endregion
@@ -82,7 +92,8 @@ namespace WebApiNet3.Controllers
         [Route("/fileStream")]
         public IActionResult GetFileAsStream()
         {
-            StreamReader file = System.IO.File.OpenText("./89000elements.txt");
+            // TODO fix path
+            StreamReader file = System.IO.File.OpenText($"./Streams/DataSeed/{Constants.FileNames.With_89000_Elements_50MB}.txt");
             return File(file.BaseStream, "application/octet-stream");
         }
 

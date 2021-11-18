@@ -19,7 +19,8 @@ namespace WebApiNet3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(
+                options=> options.MaxIAsyncEnumerableBufferLimit = 9000);
             services.AddSingleton<ArticleDbContext>();
         }
 

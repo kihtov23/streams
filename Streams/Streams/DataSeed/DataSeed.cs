@@ -2,8 +2,9 @@
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
+using Utils;
 
-namespace DataSeed
+namespace DataSeedNet3
 {
     /// <summary>
     /// Insert json to DB from files.
@@ -15,10 +16,12 @@ namespace DataSeed
         {
             await ClearDb();
 
-            await Stream50KBFileToServer();
-            await Stream5MBfileToServer();
+            // Seed Article data with big string
+            await SeedOneArticle(Constants.FileNames.With_8900_Elements_5MB);
+            await SeedOneArticle(Constants.FileNames.With_89000_Elements_50MB);
 
-            await Stream8900PostsToDb();
+            //Seed a lot of Posts data with small strings
+            await SeedPosts(Constants.FileNames.With_1_Element_1KB);
         }
 
         public static async Task ClearDb()
@@ -32,49 +35,30 @@ namespace DataSeed
             await cmd2.ExecuteNonQueryAsync();
         }
 
-        public static async Task Stream50KBFileToServer()
+        public static async Task SeedOneArticle(string fileName)
         {
             await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
             await conn.OpenAsync();
 
-            await using SqlCommand cmd = new SqlCommand("INSERT INTO [Articles] (BigString, Name) VALUES (@textdata, '89 elements, 50 KB')", conn);
-
-            using StreamReader file = File.OpenText("./DataSeed/89elements.txt");
-            // Add a parameter which uses the StreamReader we just opened
-            // Size is set to -1 to indicate "MAX"
+            await using SqlCommand cmd = new SqlCommand($"INSERT INTO [Articles] (BigString, Name) VALUES (@textdata, '{fileName}')", conn);
+            using StreamReader file = File.OpenText($"./DataSeed/{fileName}.txt");
             cmd.Parameters.Add("@textdata", SqlDbType.NVarChar, -1).Value = file;
-            // Send the data to the server asynchronously
+
             await cmd.ExecuteNonQueryAsync();
         }
 
-        public static async Task Stream5MBfileToServer()
+        public static async Task SeedPosts(string filename)
         {
             await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
             await conn.OpenAsync();
 
-            await using SqlCommand cmd = new SqlCommand("INSERT INTO [Articles] (BigString, Name) VALUES (@textdata, '89000 elements, 5 MB')", conn);
-            using StreamReader file = File.OpenText("./DataSeed/8900elements.txt");
-            // Add a parameter which uses the StreamReader we just opened
-            // Size is set to -1 to indicate "MAX"
-            cmd.Parameters.Add("@textdata", SqlDbType.NVarChar, -1).Value = file;
-            // Send the data to the server asynchronously
-            await cmd.ExecuteNonQueryAsync();
-        }
-
-        public static async Task Stream8900PostsToDb()
-        {
-            await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
-            await conn.OpenAsync();
-
-            await using SqlCommand cmd = new SqlCommand("INSERT INTO [Posts] (PostString, Name) VALUES (@textdata, '8900 elements')", conn);
-            using StreamReader file = File.OpenText("./DataSeed/1element.txt");
-            // Add a parameter which uses the StreamReader we just opened
-            // Size is set to -1 to indicate "MAX"
+            await using SqlCommand cmd = new SqlCommand($"INSERT INTO [Posts] (PostString, Name) VALUES (@textdata, '{filename}')", conn);
+            using StreamReader file = File.OpenText($"./DataSeed/{filename}.txt");
 
             var str = await file.ReadToEndAsync();
             cmd.Parameters.Add("@textdata", SqlDbType.NVarChar).Value = str;
-            // Send the data to the server asynchronously
-            for (var i = 0; i < 8000; i++)
+            
+            for (var i = 0; i < 8900; i++)
             {
                 await cmd.ExecuteNonQueryAsync();
             }

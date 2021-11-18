@@ -8,15 +8,28 @@
   <ItemGroup>
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.csproj" />
+  </ItemGroup>
 
 	<ItemGroup>
     <None Update="DataSeed\1element.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DataSeed\1_Element_1_KB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DataSeed\89000elements.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DataSeed\89000_Elements_50MB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DataSeed\8900elements.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DataSeed\8900_Elements_5MB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="DataSeed\890elements.txt">
