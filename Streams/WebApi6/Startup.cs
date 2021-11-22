@@ -21,7 +21,7 @@ namespace WebApiNet6
         {
 
             services.AddControllers();
-            services.AddSingleton<ArticleDbContext>();
+            services.AddDbContext<ArticleDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

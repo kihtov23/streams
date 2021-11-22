@@ -21,7 +21,8 @@ namespace WebApiNet3
         {
             services.AddControllers(
                 options=> options.MaxIAsyncEnumerableBufferLimit = 9000);
-            services.AddSingleton<ArticleDbContext>();
+
+            services.AddDbContext<ArticleDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,6 +30,23 @@ namespace WebApiNet3.Controllers
             return Ok("Hello world!");
         }
 
+        #region UseCase - BigArticleAsSingleModel
+
+        [HttpGet]
+        [Route("/bigArticleAsSingleModel")]
+        public async Task<IActionResult> GetBigArticleAsSingleModel()
+        {
+            var article = await GetArticle();
+            return Ok(article);
+        }
+
+        private async Task<Article> GetArticle()
+        {
+            return await _dbContext.Articles.FirstAsync(a => a.Name == Constants.FileNames.With_8900_Elements_5MB);
+        }
+
+        #endregion
+
         #region UseCase - Get numbers IAsyncEnumerable
 
         [HttpGet]
@@ -50,31 +67,13 @@ namespace WebApiNet3.Controllers
 
         #endregion
 
-        #region UseCase - BigArticleAsSingleModel
-
-        [HttpGet]
-        [Route("/bigArticleAsSingleModel")]
-        public async Task<IActionResult> GetBigArticleAsSingleModel()
-        {
-            var article = await GetArticle();
-            return Ok(article);
-        }
-
-        private async Task<Article> GetArticle()
-        {
-            return await _dbContext.Articles.AsNoTracking().FirstAsync(a => a.Name == Constants.FileNames.With_8900_Elements_5MB);
-        }
-
-        #endregion
-
         #region UseCase - GetPosts as IAsyncEnumerable 
 
         [HttpGet]
         [Route("/GetPosts")]
         public IAsyncEnumerable<Post> GetPostsFromDb()
         {
-            // Need to update MaxIAsyncEnumerableBufferLimit (Defaults to 8192) 
-
+            // MaxIAsyncEnumerableBufferLimit should be updated. (Defaults to 8192) 
             var posts = GetPostsQueryable();
             return posts;
         }
@@ -92,10 +91,23 @@ namespace WebApiNet3.Controllers
         [Route("/fileStream")]
         public IActionResult GetFileAsStream()
         {
-            // TODO fix path
-            StreamReader file = System.IO.File.OpenText($"./Streams/DataSeed/{Constants.FileNames.With_89000_Elements_50MB}.txt");
+            StreamReader file = System.IO.File.OpenText($"./{Constants.FileNames.With_8900_Elements_5MB}.txt");
             return File(file.BaseStream, "application/octet-stream");
         }
+
+        #endregion
+
+        #region UseCase - GetPosts as as part of single model
+
+        [HttpGet]
+        [Route("/GetPostsAsSingleModel")]
+        public IActionResult GetPostsAsSingleModel()
+        {
+            // MaxIAsyncEnumerableBufferLimit should be updated. (Defaults to 8192) 
+            var posts = GetPostsQueryable();
+            return Ok(posts);
+        }
+      
 
         #endregion
     }

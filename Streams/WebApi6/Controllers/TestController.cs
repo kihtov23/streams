@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Utils;
 using WebAPI.Posts;
 
 namespace WebApiNet6.Controllers
@@ -16,6 +17,13 @@ namespace WebApiNet6.Controllers
         public TestController(ArticleDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        [Route("/")]
+        public IActionResult HelloWorld()
+        {
+            return Ok("Hello world!");
         }
 
         #region UseCase - Get Numbers as IAsyncEnumerable
@@ -44,23 +52,23 @@ namespace WebApiNet6.Controllers
         [Route("/posts")]
         public IAsyncEnumerable<Post> GetPosts()
         {
-            //TODO chose one of 2
-            //var posts = GetPostsQueryable();
-            var posts = GetPostsStreamForeach();
+            //Chose one of 2 options
+            var posts = GetPostsQueryable();
+            //var posts = GetPostsStreamForeach();
             return posts;
         }
 
         private IAsyncEnumerable<Post> GetPostsQueryable()
         {
-            return _dbContext.Posts.Where(a => a.Name == "8900 elements").AsAsyncEnumerable();
+            return _dbContext.Posts.AsNoTracking().Where(a => a.Name == Constants.FileNames.With_1_Element_1KB).AsAsyncEnumerable();
         }
 
         private async IAsyncEnumerable<Post> GetPostsStreamForeach()
         {
 
-            foreach (var post in _dbContext.Posts.AsNoTracking().Where(a => a.Name == "8900 elements"))
+            foreach (var post in _dbContext.Posts.AsNoTracking().Where(a => a.Name == Constants.FileNames.With_1_Element_1KB))
             {
-                await Task.Delay(500);
+                //await Task.Delay(500);
                 yield return post;
             }
         }
