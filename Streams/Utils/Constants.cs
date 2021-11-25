@@ -2,9 +2,7 @@
 {
     public class Constants
     {
-        //public const string ConnectionString = "Data Source=.;Initial Catalog=Test;Integrated Security=True;";
-        public const string ConnectionString =
-            "Server=tcp:em-services-devtest.database.windows.net,1433;Initial Catalog=em-utilizationtrackingdb-dev;Persist Security Info=False;User ID=utilizationtrackingdbdev;Password=XmBE9Wa!6;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public const string ConnectionString = "Data Source=.;Initial Catalog=Test;Integrated Security=True;";
 
         public class FileNames
         {
