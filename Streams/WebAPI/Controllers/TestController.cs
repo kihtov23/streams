@@ -107,7 +107,21 @@ namespace WebApiNet3.Controllers
             var posts = GetPostsQueryable();
             return Ok(posts);
         }
-      
+
+
+        #endregion
+
+        #region UseCase - GetArticle with Ado Net
+
+        [HttpGet]
+        [Route("/article")]
+        public IActionResult GetArticleAdoNet()
+        {
+            // MaxIAsyncEnumerableBufferLimit should be updated. (Defaults to 8192) 
+            var posts = GetPostsQueryable();
+            return Ok(posts);
+        }
+
 
         #endregion
     }

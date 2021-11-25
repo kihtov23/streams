@@ -20,6 +20,9 @@
     <None Update="DataSeed\1_Element_1_KB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DataSeed\44500_Elements_25MB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DataSeed\89000elements.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -14,11 +14,11 @@ namespace DataSeedNet3
     {
         public static async Task Seed()
         {
-            await ClearDb();
+            //await ClearDb();
 
             // Seed Article data with big string
-            await SeedOneArticle(Constants.FileNames.With_8900_Elements_5MB);
-            await SeedOneArticle(Constants.FileNames.With_89000_Elements_50MB);
+            //await SeedOneArticle(Constants.FileNames.With_8900_Elements_5MB);
+            //await SeedOneArticle(Constants.FileNames.With_44500_Elements_25MB);
 
             //Seed a lot of Posts data with small strings
             await SeedPosts(Constants.FileNames.With_1_Element_1KB);
@@ -40,7 +40,12 @@ namespace DataSeedNet3
             await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
             await conn.OpenAsync();
 
-            await using SqlCommand cmd = new SqlCommand($"INSERT INTO [Articles] (BigString, Name) VALUES (@textdata, '{fileName}')", conn);
+            await using SqlCommand cmd = new SqlCommand(
+                $"INSERT INTO [ChangeDocument] " +
+                $"([EmergencyAccessRequestId],[ErpSystemId],[DocumentData],[CreatedDateUtc],[CreatedBy],[UpdatedDateUtc],[UpdatedBy])" +
+                $" VALUES " +
+                $"(NEWID(),777,@textdata,'2021-03-17 10:26:49.3312378 +00:00','44500_Elements_25MB',NULL,NULL)", 
+                conn);
             using StreamReader file = File.OpenText($"./DataSeed/{fileName}.txt");
             cmd.Parameters.Add("@textdata", SqlDbType.NVarChar, -1).Value = file;
 
@@ -52,13 +57,16 @@ namespace DataSeedNet3
             await using SqlConnection conn = new SqlConnection(Constants.ConnectionString);
             await conn.OpenAsync();
 
-            await using SqlCommand cmd = new SqlCommand($"INSERT INTO [Posts] (PostString, Name) VALUES (@textdata, '{filename}')", conn);
+            await using SqlCommand cmd = new SqlCommand(
+                $"INSERT INTO [DocumentData] " +
+                $"([ChangeDocumentId],[DocumentData])" +
+                $" VALUES (257, @textdata)", conn);
             using StreamReader file = File.OpenText($"./DataSeed/{filename}.txt");
 
             var str = await file.ReadToEndAsync();
             cmd.Parameters.Add("@textdata", SqlDbType.NVarChar).Value = str;
             
-            for (var i = 0; i < 8900; i++)
+            for (var i = 0; i < 44500; i++)
             {
                 await cmd.ExecuteNonQueryAsync();
             }
